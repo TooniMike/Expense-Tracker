@@ -1,10 +1,12 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response 
 
-from .serializers import UserSerializer
+from .serializers import *
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
+from rest_framework import viewsets
+from .models import *
 
 from django.shortcuts import get_object_or_404
 
@@ -29,6 +31,8 @@ def signup(request):
         return Response({"token": token.key, "user": serializer.data})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -38,3 +42,13 @@ from rest_framework.permissions import IsAuthenticated
 @permission_classes([IsAuthenticated])
 def test_token(request):
     return Response({"passed for {}".format(request.user.email)})
+
+
+class BudgetViewSet(viewsets.ModelViewSet):
+    queryset = Budget.objects.all()
+    serializer_class=BudgetSerializer
+
+
+class ExpenseViewSet(viewsets.ModelViewSet):
+    queryset = Expense.objects.all()
+    serializer_class=ExpenseSerializer
