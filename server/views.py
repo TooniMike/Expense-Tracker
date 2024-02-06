@@ -45,7 +45,7 @@ def test_token(request):
 
 
 class BudgetViewSet(viewsets.ModelViewSet):
-    queryset = Budget.objects.all()
+    queryset = Budget.objects.all()  
     serializer_class=BudgetSerializer
 
 
